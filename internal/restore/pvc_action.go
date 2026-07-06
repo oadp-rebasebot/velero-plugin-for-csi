@@ -418,14 +418,14 @@ func restoreFromVolumeSnapshot(pvc *corev1api.PersistentVolumeClaim, snapClient 
 	volumeSnapshotName string, logger logrus.FieldLogger) error {
 	vs, err := snapClient.SnapshotV1().VolumeSnapshots(pvc.Namespace).Get(context.TODO(), volumeSnapshotName, metav1.GetOptions{})
 	if err != nil {
-		return errors.Wrapf(err, fmt.Sprintf("Failed to get Volumesnapshot %s/%s to restore PVC %s/%s", pvc.Namespace, volumeSnapshotName, pvc.Namespace, pvc.Name))
+		return errors.Wrapf(err, "Failed to get Volumesnapshot %s/%s to restore PVC %s/%s", pvc.Namespace, volumeSnapshotName, pvc.Namespace, pvc.Name)
 	}
 
 	if _, exists := vs.Annotations[util.VolumeSnapshotRestoreSize]; exists {
 		restoreSize, err := resource.ParseQuantity(vs.Annotations[util.VolumeSnapshotRestoreSize])
 		if err != nil {
-			return errors.Wrapf(err, fmt.Sprintf("Failed to parse %s from annotation on Volumesnapshot %s/%s into restore size",
-				vs.Annotations[util.VolumeSnapshotRestoreSize], vs.Namespace, vs.Name))
+			return errors.Wrapf(err, "Failed to parse %s from annotation on Volumesnapshot %s/%s into restore size",
+				vs.Annotations[util.VolumeSnapshotRestoreSize], vs.Namespace, vs.Name)
 		}
 		// It is possible that the volume provider allocated a larger capacity volume than what was requested in the backed up PVC.
 		// In this scenario the volumesnapshot of the PVC will end being larger than its requested storage size.

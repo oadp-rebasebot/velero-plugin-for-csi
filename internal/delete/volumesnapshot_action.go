@@ -2,7 +2,6 @@ package delete
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
@@ -56,7 +55,7 @@ func (p *VolumeSnapshotDeleteItemAction) Execute(input *velero.DeleteItemActionE
 		// This ensures that the volume snapshot in the storage provider is also deleted.
 		err := util.SetVolumeSnapshotContentDeletionPolicy(*vs.Status.BoundVolumeSnapshotContentName, snapClient.SnapshotV1())
 		if err != nil && !apierrors.IsNotFound(err) {
-			return errors.Wrapf(err, fmt.Sprintf("failed to patch DeletionPolicy of volume snapshot %s/%s", vs.Namespace, vs.Name))
+			return errors.Wrapf(err, "failed to patch DeletionPolicy of volume snapshot %s/%s", vs.Namespace, vs.Name)
 		}
 
 		if apierrors.IsNotFound(err) {

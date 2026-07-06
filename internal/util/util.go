@@ -237,7 +237,7 @@ func GetVolumeSnapshotContentForVolumeSnapshot(volSnap *snapshotv1api.VolumeSnap
 	err := wait.PollImmediate(interval, timeout, func() (bool, error) {
 		vs, err := snapshotClient.VolumeSnapshots(volSnap.Namespace).Get(context.TODO(), volSnap.Name, metav1.GetOptions{})
 		if err != nil {
-			return false, errors.Wrapf(err, fmt.Sprintf("failed to get volumesnapshot %s/%s", volSnap.Namespace, volSnap.Name))
+			return false, errors.Wrapf(err, "failed to get volumesnapshot %s/%s", volSnap.Namespace, volSnap.Name)
 		}
 
 		if vs.Status == nil || vs.Status.BoundVolumeSnapshotContentName == nil {
@@ -247,7 +247,7 @@ func GetVolumeSnapshotContentForVolumeSnapshot(volSnap *snapshotv1api.VolumeSnap
 
 		snapshotContent, err = snapshotClient.VolumeSnapshotContents().Get(context.TODO(), *vs.Status.BoundVolumeSnapshotContentName, metav1.GetOptions{})
 		if err != nil {
-			return false, errors.Wrapf(err, fmt.Sprintf("failed to get volumesnapshotcontent %s for volumesnapshot %s/%s", *vs.Status.BoundVolumeSnapshotContentName, vs.Namespace, vs.Name))
+			return false, errors.Wrapf(err, "failed to get volumesnapshotcontent %s for volumesnapshot %s/%s", *vs.Status.BoundVolumeSnapshotContentName, vs.Namespace, vs.Name)
 		}
 
 		// we need to wait for the VolumeSnaphotContent to have a snapshot handle because during restore,
@@ -480,7 +480,7 @@ func recreateVolumeSnapshotContent(vsc snapshotv1api.VolumeSnapshotContent, back
 			if apierrors.IsNotFound(err) {
 				return true, nil
 			}
-			return false, errors.Wrapf(err, fmt.Sprintf("failed to get VolumeSnapshotContent %s", vsc.Name))
+			return false, errors.Wrapf(err, "failed to get VolumeSnapshotContent %s", vsc.Name)
 		}
 		return false, nil
 	})
