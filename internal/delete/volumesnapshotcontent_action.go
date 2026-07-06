@@ -2,7 +2,6 @@ package delete
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
@@ -64,7 +63,7 @@ func (p *VolumeSnapshotContentDeleteItemAction) Execute(input *velero.DeleteItem
 				snapCont.Name, input.Backup.Name, *snapCont.Status.SnapshotHandle)
 			return nil
 		}
-		return errors.Wrapf(err, fmt.Sprintf("failed to set DeletionPolicy on volumesnapshotcontent %s. Skipping deletion", snapCont.Name))
+		return errors.Wrapf(err, "failed to set DeletionPolicy on volumesnapshotcontent %s. Skipping deletion", snapCont.Name)
 	}
 
 	err = snapClient.SnapshotV1().VolumeSnapshotContents().Delete(context.TODO(), snapCont.Name, metav1.DeleteOptions{})
