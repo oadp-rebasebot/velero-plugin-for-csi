@@ -39,7 +39,7 @@ import (
 	velerov1api "github.com/vmware-tanzu/velero/pkg/apis/velero/v1"
 	veleroClientSet "github.com/vmware-tanzu/velero/pkg/generated/clientset/versioned"
 	"github.com/vmware-tanzu/velero/pkg/label"
-	"github.com/vmware-tanzu/velero/pkg/podvolume"
+	"github.com/vmware-tanzu/velero/pkg/util/podvolume"
 )
 
 const (
